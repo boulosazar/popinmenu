@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POP IN</title>
+    <style>
+	
+        /* Reset some default styles */
+        body, h1, h2, p, ul, li, dl, dt, dd {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Top status bar */
+        .status-bar {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+			position: fixed;
+            width: 100%;
+            z-index: 9999;
+            top: 0;
+        }
+		
+		.status-bar .cart-icon {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+
+        .status-bar .cart-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .status-bar .cart-count {
+            position: absolute;
+            right: 10px;
+            top: 30px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 14px;
+        }
+
+        /* Logo and food images */
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+		
+		#logo {
+            position: relative; /* Necessary for positioning the pseudo-element */
+            background-image: url('burger9.png');
+            background-size: cover; /* Cover the entire section */
+            background-repeat: no-repeat; /* Prevent image from repeating */
+            padding: 20px; /* Add padding to give space around the image */
+            border-radius: 8px; /* Optional: Add border-radius for aesthetics */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+			/*min-height: 400px;*/
+        }
+
+        #logo::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+            border-radius: 8px;
+			z-index: 1;
+        }
+
+        .logo img {
+            position: relative;
+            max-width: 100%;
+            height: auto;
+            z-index: 2; /* Ensure the logo is above the overlay */
+        }
+		
+
+        /* Navigation buttons */
+        .nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .nav a {
+            display: inline-block;
+            margin: 10px;
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #eee;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav a:hover {
+            background-color: #ccc;
+        }
+
+        /* Highlighted section */
+        .highlight {
+            background-color: red;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight h1 {
+            margin-bottom: 10px;
+        }
+
+        .highlight div {
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        /* Footer with URL link */
+        .footer {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .footer a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #555;
+        }
+
+        /* Section styles */
+        .section {
+            padding: 2em;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+			position: relative;
+            color: white; /* Make text white for better readability on dark backgrounds */
+        }
+		
+		.section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+            z-index: 1;
+            border-radius: 8px;
+        }
+		
+		.section > * {
+            position: relative;
+            z-index: 2; /* Ensure content is above the overlay */
+        }
+
+        /* Section background colors */
+        #appetizer {
+			background-image: url('fries.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #sandwiches-subs {
+			background-image: url('fajita.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #burgers {
+			background-image: url('burger2.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #beverages {
+			background-image: url('pepsi.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Section headings */
+        h2 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        /* Menu list */
+        ul {
+            padding-left: 20px;
+        }
+
+        dl {
+            margin-bottom: 10px;
+            background-color: #444;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+
+        dd {
+            margin-left: 20px;
+            font-style: italic;
+        }
+		
+		.add-to-cart {
+            float: right;
+            background-color: #e53935;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-to-cart:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Cart Section */
+        #cart-section {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #cart-section h2 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        #cart-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        #cart-items li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: black;
+        }
+
+        #cart-items button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 2px 6px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #cart-items button:hover {
+            background: darkred;
+        }
+
+        .checkout {
+            display: inline-block;
+            background-color: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px; /* Rounded shape */
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+			margin-bottom: 20px; /* Space between button and CV */
+        }
+
+        .checkout:hover {
+            background-color: red;
+            transform: scale(1.05); /* Slight enlargement on hover */
+        }
+		
+		@keyframes slideIn {
+			from {
+				transform: translateX(-100%);
+				opacity: 0;
+			}
+			to {
+				transform: translateX(0);
+				opacity: 1;
+			}
+		}
+
+		.slide-in {
+			animation: slideIn 0.5s forwards;
+		}
+
+		.section ul li {
+			opacity: 0; /* Initially hide items */
+		}
+
+    </style>
+</head>
+<body>
+    <header class="status-bar">
+        POP IN
+        <div class="cart-icon" onclick="toggleCart()">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span id="cart-count">0</span>
+        </div>
+        <div class="cart-section" id="cart-section">
+            <ul id="cart-items"></ul>
+            <button onclick="checkout()" class="checkout">Checkout</button>
+        </div>
+    </header>
+    <main>
+        <section class="logo" id="logo">
+            <img src="popin logo.png">
+        </section>
+        
+        <nav class="nav">
+            <a href="#appetizer">APPETIZER</a>
+            <a href="#sandwiches-subs">SANDWICHES/SUBS</a>
+            <a href="#burgers">BURGERS</a>
+            <a href="#beverages">BEVERAGES</a>
+            <a href="#about">ABOUT</a>
+        </nav>
+        
+        <section class="highlight" id="about">
+            <h1>ABOUT US</h1>
+            <div>Welcome to Pop in, where passion meets flavor in every dish we serve. At Pop in, we're more than just a dining experience; we're a culinary journey crafted with love and dedication. With each bite, savor the dedication of our team, committed to delivering delectable meals that tantalize your taste buds and warm your soul. Our story is one of passion for great food and a deep-rooted desire to bring joy to every customer who steps up to our window. From our humble beginnings to becoming a beloved destination, our commitment remains unwavering - to provide you with the finest snacks in town, crafted with care and served with a smile.</div>
+        </section>
+        
+        <!-- Appetizer Section -->
+        <section id="appetizer" class="section">
+            <h2>APPETIZER</h2>
+            <ul>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Fries box', 2)">+</button><dt>Fries box - $2<dt></dl></li>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Wedges box', 4)">+</button><dt>Wedges box - $4<dt></dl></li>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Curly fries', 4.5)">+</button><dt>Curly fries - $4.5<dt></dl></li>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Waffle fries', 4.5)">+</button><dt>Waffle fries - $4.5<dt></dl></li>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Mozzarella sticks', 4)">+</button><dt>Mozzarella sticks - $4<dt></dl></li>
+                <li>
+                    <dl>
+                        <dt>Chiken nuggets - $3.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Chiken nuggets', 3.5)">+</button>
+                        <dd>Served with fries.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Krispy - $5</dt>
+						<button class="add-to-cart" onclick="addToCart('Krispy', 5)">+</button>
+                        <dd>Served with fries and sauce.</dd>
+                    </dl>
+                </li>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Onion rings', 4.5)">+</button><dt>Onion rings - $4.5</dt></dl></li>
+                <li>
+                    <dl>
+                        <dt>Chiken and Fries - $5.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Chiken and Fries', 5.5)">+</button>
+                        <dd>Fries, chiken bites topped with BBQ & honey mustard.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Boneless Salad - $5.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Boneless Salad', 5.5)">+</button>
+                        <dd>Fried chiken strips dipped in BBQ sauce, iceberg with honey mustard & mayo sauce.</dd>
+                       
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Wings - $4.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Wings', 4.5)">+</button>
+                        <dd>10 pcs dipped in barbecue, honey mustard or plain.</dd>
+                    </dl>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Sandwiches/Subs Section -->
+        <section id="sandwiches-subs" class="section">
+            <h2>SANDWICHES/SUBS</h2>
+            <ul>
+                <li>
+                    <dl>
+                        <dt>Taouk - $4.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Taouk', 4.5)">+</button>
+                        <dd>Marinated chiken breast, garlic, coloeslaw, fries, pickles & ketchup.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Taouk Special - $5.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Taouk Special', 5.5)">+</button>
+                        <dd>Marinated chiken breast, garlic, coloeslaw, fries, pickles & ketchup, cheese, turkey.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Fries - $3</dt>
+						<button class="add-to-cart" onclick="addToCart('Fries', 3)">+</button>
+                        <dd>Fries, coleslaw, garlic, pickles & ketchup.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Chiken Sub - $5.8</dt>
+						<button class="add-to-cart" onclick="addToCart('Chiken Sub', 5.8)">+</button>
+                        <dd>Chiken breast, tomatoes, lettuce, pickles, cheese, turkey.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Fajita - $5.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Fajita', 5.5)">+</button>
+                        <dd>Marinated grilled chiken breast strips, sweet corn, bell pepper, onions, mushrooms, melted mozzarella cheese, chips sticks & mayo sauce.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Boneless Wrap - $5</dt>
+						<button class="add-to-cart" onclick="addToCart('Boneless Wrap', 5)">+</button>
+                        <dd>Fried chiken dipped in BQQ, melted mozarella cheese, iceberg, chips sticks, honey mustard & mayo sauce.</dd>
+                    </dl>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Burgers Section --> 
+        <section id="burgers" class="section">
+            <h2>BURGERS</h2>
+            <ul>
+                <li>
+                    <dl>
+                        <dt>Hamburger - $4.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Hamburger', 4.5)">+</button>
+                        <dd>Grilled beef burger patty, fries, coleslaw, ketchup.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Classic burger - $4.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Classic burger', 4.5)">+</button>
+                        <dd>Grilled beef burger patty, fries, iceberg, fresh tomato, fresh onions, ketchup.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Cheese burger - $5</dt>
+						<button class="add-to-cart" onclick="addToCart('Cheese burger', 5)">+</button>
+                        <dd>Grilled beef burger patty, fries, coleslaw, ketchup, cheese, turkey.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>POP-IN burger - $6</dt>
+						<button class="add-to-cart" onclick="addToCart('POP-IN burger', 6)">+</button>
+                        <dd>Grilled beef burger patty, Chiken escalope, deep fried mozzarella, honey mustard and BBQ sauce, lollo rosso lettuce.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Swiss Mushroom burger - $6</dt>
+						<button class="add-to-cart" onclick="addToCart('Swiss Mushroom burger', 6)">+</button>
+                        <dd>150g. Grilled beef burger patty, Emmental, mushroom sauce, mayo sauce.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Double smashed burger - $6</dt>
+						<button class="add-to-cart" onclick="addToCart('Double smashed burger', 6)">+</button>
+                        <dd>2 smashed Grilled beef burger patties, topped with cheddar cheese, burger sauce, dill pickles.</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>Mozzarella beef burger - $5.5</dt>
+						<button class="add-to-cart" onclick="addToCart('Mozzarella beef burger', 5.5)">+</button>
+                        <dd>Grilled beef burger patty, deep fried mozzarella, fries, fresh tomato, coleslaw.</dd>
+                    </dl>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Beverages Section -->
+        <section id="beverages" class="section">
+            <h2>BEVERAGES</h2>
+            <ul>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Soft drinks', 0.8)">+</button><dt>Soft drinks - $0.8<dt></dl></li>
+                <li><dl><button class="add-to-cart" onclick="addToCart('Soda', 0.3)">+</button><dt>Water - $0.3<dt></dl></li>
+            </ul>
+        </section>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 Pop In Hiyata. All rights reserved. | Designed by B.A.</p>
+    </footer>
+    <script>
+        let cart = [];
+        
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            document.getElementById('cart-count').innerText = cart.length;
+            updateCart();
+        }
+        
+        function toggleCart() {
+            const cartSection = document.getElementById('cart-section');
+            cartSection.style.display = cartSection.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach((cartItem, index) => {
+                const li = document.createElement('li');
+                li.innerText = `${cartItem.item} - $${cartItem.price}`;
+                const removeButton = document.createElement('button');
+                removeButton.innerText = 'x';
+                removeButton.onclick = () => {
+                    removeFromCart(index);
+                };
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            document.getElementById('cart-count').innerText = cart.length;
+            updateCart();
+        }
+
+        function checkout() {
+			let totalPrice = 0;
+			let items = "";
+			
+			cart.forEach((cartItem, index) => {
+				items += `${cartItem.item} - $${cartItem.price}\n`;
+				totalPrice += cartItem.price;
+			});
+			
+			items += "\nTotal Price: $" + totalPrice.toFixed(2);
+			
+			alert('Checkout - Items in Cart:\n\n' + items);
+			
+			// Reset the cart
+			cart = [];
+			document.getElementById('cart-count').innerText = cart.length;
+			updateCart();
+			toggleCart();
+		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			const items = document.querySelectorAll('.section ul li');
+
+			const observer = new IntersectionObserver(entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('slide-in');
+						observer.unobserve(entry.target);
+					}
+				});
+			}, {
+				threshold: 0.1
+			});
+
+			items.forEach(item => {
+				observer.observe(item);
+			});
+		});
+
+    </script>
+	
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
+
+
+
